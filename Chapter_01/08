@@ -1,0 +1,27 @@
+/* Chapter 1 exercise 8 */
+
+/* sea.c 프로그램읠 sea로 파일명을 변경한 후에 컴파일해 보아라.
+ * 이렇게 컴파일하면, 어떤 컴파일러는 경고 메시지를 낸다.
+ * UNIX 시스템에서는 "bad magic number" 또는 "unable to process using elf libraries"와 같은
+ * 메시지가 발생하기도 한다. 여러분의 시스템은 어떤 메시지를 출력하는가?
+ */
+
+/* In file sea */
+
+#include <stdio.h>
+
+int main(void)
+{
+	printf("from sea to shining C\n");
+	return 0;
+}
+
+/*
+ In terminal input: cc 08
+ In terminal output:
+
+ file format not recognized; treating as linker script
+ syntax error
+ collect2: error: ld returned 1 exit status
+ 
+ */
