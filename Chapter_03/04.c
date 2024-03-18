@@ -10,11 +10,14 @@
 
 int main(void)
 {
-    float floatNum = 1.234567890123456789f;
+    float floatNum = 1.23456789f;
     double doubleNum = 1.234567890123456789;
 
-    printf("Original float number: %lf\n", floatNum);
-    printf("num1: %.20f\nnum2: %.20f\n", num1, num2);
+    printf("Original float number: %.6f\n", floatNum);
+    printf("Original double number: %.15lf\n", doubleNum);
+
+    printf("Truncated float number: %.5f\n", floatNum);
+    printf("Truncated double number: %.14lf\n", doubleNum);
 
     return 0;
 }
