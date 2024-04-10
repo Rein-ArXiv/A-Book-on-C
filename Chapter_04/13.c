@@ -27,14 +27,26 @@ int main(void)
         }
     }
 
-    printf("%d\n", sum);
+    printf("For loop program Sum: %d\n", sum);
+
+    sum = 0;
 
     if (n >= 0){
-         
-        while (i <=  )
+        i = n;
+        while (i <= 2*n){
+            sum += i;
+            ++i;
+        }
     }
 
     else{
-
+        i = n;
+        while (i >= 2*n){
+            sum += i;
+            --i;
+        }
     }
+
+    printf("While loop program Sum: %d\n", sum);
+    return 0;
 }
