@@ -19,6 +19,7 @@ int main(void)
     printf("Input two integers : ");
     scanf("%d%d", &i, &j);
     while (i * j < 0 && ++i != 7 && j++ != 9){
-        printf("while syntax\n");
+        printf("i: %d, j: %d\n", i, j);
     }
+    return 0;
 }
