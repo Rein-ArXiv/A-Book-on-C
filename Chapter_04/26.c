@@ -23,7 +23,7 @@ int main(void)
     int left_cnt = 0, right_cnt = 0;
     char c;
 
-    while ((c =getchar()) != EOF){
+    while ((c = getchar()) != EOF){
         if (c == '{'){
             left_cnt++;
         }
