@@ -9,12 +9,12 @@
     else
         if (d > 0.0) {
             if (a != 0.0) {
-            r1 = (-b + sqrt(d)) / (2.0 * a);
-            r2 = (-b - sqrt(d)) / (2.0 * a);
-            goto L4;
-        }
-        else
-            goto L3;
+                r1 = (-b + sqrt(d)) / (2.0 * a);
+                r2 = (-b - sqrt(d)) / (2.0 * a);
+                goto L4;
+            }
+            else
+                goto L3;
         }
         else
             goto L2;
@@ -47,35 +47,27 @@ int main(void)
     d = b * b - 4.0 * a * c;
 
     if (d == 0.0){
-        if (a != 0.0){
-            r1 = (-b + sqrt(d)) / (2.0 * a);
-            r2 = (-b - sqrt(d)) / (2.0 * a);
-            
-
-    if (d == 0.0) goto L1;
+        if (a != 0.0)
+            r1 = r2 = -b / (2.0 * a);
+        else
+            printf("degenerate case\n");
+    }
     else
         if (d > 0.0) {
             if (a != 0.0) {
-            r1 = (-b + sqrt(d)) / (2.0 * a);
-            r2 = (-b - sqrt(d)) / (2.0 * a);
-            goto L4;
+                r1 = (-b + sqrt(d)) / (2.0 * a);
+                r2 = (-b - sqrt(d)) / (2.0 * a);
+                printf("L4 start\n");
+            }
+            else
+                printf("degenerate case\n");
         }
-        else
-            goto L3;
+        else {
+            if (a != 0.0) {
+                printf("imaginary roots\n");
+                printf("L4 start\n");
+            }
         }
-        else
-            goto L2;
-    L1: if (a != 0.0)
-            r1 = r2 = -b / (2.0 * a);
-        else
-            goto L3;
-    goto L4;
-    L2: if (a != 0.0) {
-            printf("imaginary roots\n");
-            goto L4;
-        }
-    L3: printf("degenerate case\n");
-    L4: .....
 
     return 0;
 }
