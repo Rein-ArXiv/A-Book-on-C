@@ -17,7 +17,7 @@ int is_fib_prime(int n);
 int main(void)
 {
     int i;
-    for (i = 1; i < 32; i++) {
+    for (i = 1; i < 30; i++) {
         is_fib_prime(i);
     }
 
