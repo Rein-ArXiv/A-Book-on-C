@@ -35,7 +35,7 @@ void f(int x)
 int main(void)
 {
     z = 5;
-    f(z);
+    f(z);   // z = 7
     printf("z = %d\n", z);
     return 0;
 }

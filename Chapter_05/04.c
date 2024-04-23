@@ -33,4 +33,3 @@ int main(void)
     printf("z = %d\n", z);
     return 0;
 }
-
