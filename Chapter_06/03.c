@@ -43,5 +43,11 @@ int main(void)
 
     ptrdiff_t diff = p - q;
     printf("diff = %d\n", diff);
+    
+    diff = p - (int *) 0;
+    printf("diff = %d\n", diff);
+
+    diff = p - (ptrdiff_t *) 0;
+    printf("diff = %d\n", diff);
     return 0;
 }
