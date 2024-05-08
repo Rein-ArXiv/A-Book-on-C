@@ -1,7 +1,6 @@
 /* Chapter 6 exercise 12 */
 
 /* n차 이하의 실수 다항식 p(x)는 다음과 같다.
- * 의미를 설명하여라.
 
     p(x) = a_0 + a_1 x + a_2 x^2 + ... + a_n x^n
 
@@ -37,16 +36,17 @@ double horner(double p[], double x, int n);
 
 int main(void)
 {
-    double p[N + 1] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
-    double x, answer;
+    double p[N + 1] = {3.0, 2.0, 3.0, 4.0, 5.0, 6.0};
+    double x, eval_answer, horner_answer;
     int n;
 
     
-    x = 1;
+    x = 2;
 
-    answer = eval(p, x, N);
-    printf("Answer: %lf\n", answer);
-
+    eval_answer = eval(p, x, N);
+    horner_answer = horner(p, x, N);
+    printf("Eval Answer: %lf\n", eval_answer);
+    printf("Horner Answer: %lf\n", horner_answer);
     return 0;
 }
 
@@ -71,14 +71,11 @@ double horner(double p[], double x, int n)
     int i;
     double val = 0;
 
-    if (n == 0){
-        return p[n];
+    for (i = n; i >= 0; i--)
+    {
+        val *= x;
+        val += p[i];
     }
-
-    val *= x;
-    val += p[n];
-    val += horner(p, x, n-1);
-    
 
     return val;
 }
