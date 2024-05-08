@@ -16,6 +16,7 @@
 
     double eval(double p[], double x, int n) // n is max degree
     {
+        .....
         
  * 두 가지 버전의 함수를 작성하여라. 첫 번째 버전은 직관적인 방법을 사용하여 값
  * 을 계산해야 한다. 두 번째 버전은 Horner의 법칙을 사용해야 한다. Horner의 법
@@ -25,3 +26,59 @@
 
  * eval() 함수의 두 가지 버전에서 덧셈과 곱셉의 수는 각각 얼마나 되는가?
  */
+
+#include <stdio.h>
+#include <math.h>
+
+#define     N   5
+
+double eval(double p[], double x, int n);
+double horner(double p[], double x, int n);
+
+int main(void)
+{
+    double p[N + 1] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
+    double x, answer;
+    int n;
+
+    
+    x = 1;
+
+    answer = eval(p, x, N);
+    printf("Answer: %lf\n", answer);
+
+    return 0;
+}
+
+double eval(double p[], double x, int n)
+{
+    int i;
+    double val = 0;
+
+    /*
+    for (i = n; i >= 0; i--)
+    {
+        val += p[i] * pow(x, i);
+    }
+    */
+
+    val = p[0] + p[1] * x + p[2] * (pow(x, 2)) + p[3] * (pow(x, 3)) + p[4] * (pow(x, 4)) + p[5] * (pow(x, 5));
+    return val;
+}
+
+double horner(double p[], double x, int n)
+{
+    int i;
+    double val = 0;
+
+    if (n == 0){
+        return p[n];
+    }
+
+    val *= x;
+    val += p[n];
+    val += horner(p, x, n-1);
+    
+
+    return val;
+}
