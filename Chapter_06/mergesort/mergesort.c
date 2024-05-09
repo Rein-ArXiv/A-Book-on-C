@@ -7,15 +7,16 @@ void mergesort(int key[], int n)
     for (m = 1; m < n; m*=2) // m is power of 2
     ;
     if (n < m) {
+        m = n;
         printf("ERROR: Array size is not a power of 2 - bye!\n");
         exit(1);
     }
     w = calloc(n, sizeof(int)); // allocate workspace
     assert(w != NULL); // check that calloc() worked
     for (k = 1; k < n; k*=2){
-        for (j = 0; j < n - k; j+= 2 * k)
+        for (j = 0; j < n - k; j += 2 * k)
             // Merge two subarrays of key[] into a subarray of w[].
-            merge(key+j, key+j+k, w+j, k, k);
+            merge(key + j, key + j + k, w + j, k, k);
         for (j = 0; j < n; ++j)
             key[j] = w[j];
     }
