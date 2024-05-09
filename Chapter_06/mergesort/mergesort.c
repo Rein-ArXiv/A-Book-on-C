@@ -2,6 +2,7 @@
 
 void mergesort(int key[], int n)
 {
+    if (n <= 1) return key;
     int j, k, m, *w;
 
     for (m = 1; m < n; m*=2) // m is power of 2
