@@ -2,6 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void merge(int a[], int b[], int c[], int m, int n);
-void mergesort(int key[], int n);
-void wrt(int key[], int sz);
+void merge(int arr[], int l, int m, int r);
+void mergesort(int arr[], int l, int r);
+void wrt(int key[], int size);

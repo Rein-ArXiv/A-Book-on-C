@@ -1,25 +1,15 @@
 #include "mergesort.h"
 
-void mergesort(int key[], int n)
+void mergesort(int arr[], int l, int r)
 {
-    if (n <= 1) return key;
-    int j, k, m, *w;
+    if (l < r)
+    {
+        int m = l + (r - l) / 2;    // Same as (l+r)/2, but avoids overflow for large l and h
 
-    for (m = 1; m < n; m*=2) // m is power of 2
-    ;
-    if (n < m) {
-        m = n;
-        printf("ERROR: Array size is not a power of 2 - bye!\n");
-        exit(1);
+        // Sort first and second halves
+        mergesort(arr, l, m);
+        mergesort(arr, m + 1, r);
+
+        merge(arr, l, m, r);
     }
-    w = calloc(n, sizeof(int)); // allocate workspace
-    assert(w != NULL); // check that calloc() worked
-    for (k = 1; k < n; k*=2){
-        for (j = 0; j < n - k; j += 2 * k)
-            // Merge two subarrays of key[] into a subarray of w[].
-            merge(key + j, key + j + k, w + j, k, k);
-        for (j = 0; j < n; ++j)
-            key[j] = w[j];
-    }
-    free(w);
 }

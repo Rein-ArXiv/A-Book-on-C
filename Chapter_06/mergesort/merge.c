@@ -1,16 +1,50 @@
 #include "mergesort.h"
 
-void merge(int a[], int b[], int c[], int m, int n)
+void merge(int arr[], int l, int m, int r)
 {
-    int i = 0, j = 0, k = 0;
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
 
-    while (i < m && j < n)
-        if (a[i] < b[j])
-            c[k++] = a[i++];
+    int L[n1], R[n2];
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    i = 0;  // Initial index of first subarray
+    j = 0;  // Initial index of second subarray
+    k = l;  // Initial index of merged subarray
+    
+
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            i++;
+        }
         else
-            c[k++] = b[j++];
-    while (i < m)
-        c[k++] = a[i++];
-    while (j < n)
-        c[k++] = b[j++];
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+   
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
 }
+
