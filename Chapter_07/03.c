@@ -10,7 +10,7 @@
  * 위 비트로 들어오도록 해야 한다. 다음은 char 형에 대해 정의된 순환 이동 연산
  * 의 두 가지 예이다.
  
-    10000001을 1 만큼 순환 이동하면 0000011이 된다.
+    10000001을 1 만큼 순환 이동하면 00000011이 된다.
     01101011을 3 만큼 순환 이동하면 01011011이 된다.
 
  */
@@ -18,31 +18,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <time.h>
 
-short majority(short a, short b, short c)
+int circular_shift(int a, int n)
 {
-    short result = 0;
-    short n = sizeof(short) * CHAR_BIT;
-    short mask = 1;
-    int count = 0;
-    
-    for (int i = 1; i <= n; i++){
-        count = 0;
-        if (a & mask)
-            count++;
-        
-        if (b & mask)
-            count++;
-        
-        if (c & mask)
-            count++;
-        
-        if (count >= 2){
-            result += 1 * mask;
-        }
-    }
-    return result;
 }
 
 void short_bit_print(short a)
@@ -65,25 +43,10 @@ void short_bit_print(short a)
 
 int main(void)
 {
-    srand(time(NULL));
-    short a, b, c, result;
-    
-    a = rand() % SHRT_MAX;
-    b = rand() % SHRT_MAX;
-    c = rand() % SHRT_MAX;
-    
-    printf("Alice: ");
-    short_bit_print(a);
-    printf("Betty: ");
-    short_bit_print(b);
-    printf("Carole: ");
-    short_bit_print(c);
-    
-    result = majority(a, b, c);
-    
-    printf("Result: ");
-    short_bit_print(result);
+    char num = 127; // 01111111 in binary
+    char result = (char) ((unsigned char) num << 1);
 
+    printf("%d\n", num);   // Output: 127
+    printf("%d\n", result); // Expected output: -2 (11111110 in binary)
     return 0;
 }
-
