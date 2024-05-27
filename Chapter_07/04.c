@@ -12,3 +12,17 @@
         printf("Sign bits are shifted in.\n");
 
  */
+
+#include <stdio.h>
+
+int main(void){
+    int         i = -1;     // turn all bits on
+    unsigned    u = -1; 
+
+    if (i >> 1 == u >> 1)
+        printf("Zeros are shifted in.\n");
+    else
+        printf("Sign bits are shifted in.\n");
+
+    return 0;
+}

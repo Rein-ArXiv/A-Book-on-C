@@ -19,15 +19,20 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#define INT_BIT 32
+
 int circular_shift(int a, int n)
 {
+    n %= INT_BIT;
+
+    return ((a << n) | (a >> (INT_BIT - n)));
 }
 
-void short_bit_print(short a)
+void bit_print(int a)
 {
-    short i;
-    short n = sizeof(short) * CHAR_BIT;
-    short mask = 1 << (n - 1);
+    int i;
+    int n = INT_BIT;
+    int mask = 1 << (n - 1);
 
     
     for (i = 1; i <= n; i++){
@@ -43,10 +48,16 @@ void short_bit_print(short a)
 
 int main(void)
 {
-    char num = 127; // 01111111 in binary
-    char result = (char) ((unsigned char) num << 1);
+    int a = 129; // 10000001
+    int n = 31;
+    int result = circular_shift(a, n);
+    
+    printf("Int a:      %d\n", a);
+    printf("Bit a:      ");
+    bit_print(a);
 
-    printf("%d\n", num);   // Output: 127
-    printf("%d\n", result); // Expected output: -2 (11111110 in binary)
+    printf("Int result: %d\n", result); // Output: 3 (00000011)
+    printf("Bit result: ");
+    bit_print(result);
     return 0;
 }
