@@ -6,78 +6,53 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <limits.h>
+#include <inttypes.h>
 
-#define LONG_BIT 32
-
-short interleave_bit(long a)
-{
+uint16_t extract_alternating_bits(uint32_t input) {
+    uint16_t result = 0;
     int i;
-    int n = LONG_BIT;
-    long mask = 1 << (LONG_BIT - 1);
-    short result = 0;
 
-    
-    for (int i=LONG_BIT-1; i >= 0; i-=2){
-        result += mask & a;
-        mask >>= 2;
-        result >>= 1;
+    for (i = 0; i < 16; i++) {
+        // 홀수 번째 비트 추출 (0, 2, 4, ...)
+        if (input & (1u << (2 * i))) {
+            result |= (1u << i); // 추출된 비트를 result의 해당 위치에 설정
+        }
     }
+
     return result;
 }
 
-void bit_print(long a)
-{
-    int i;
-    int n = LONG_BIT;
-    long mask = 1 << (n - 1);
-
-    
-    for (i = 1; i <= n; i++){
-        putchar(((a & mask) == 0) ? '0' : '1');
-
-        a <<= 1;
-
-        if (i % CHAR_BIT == 0 && i < n)
+// 비트 출력 함수 (보조 함수)
+void print_bits(uint32_t num, int num_bits) {
+    unsigned long mask = 1UL << (num_bits - 1); // 최상위 비트 마스크 생성
+    for (int i = 0; i < num_bits; i++) {
+        putchar((num & mask) ? '1' : '0'); // 비트 값 출력
+        mask >>= 1; // 마스크 오른쪽 시프트
+        if (i % 8 == 7 && i < num_bits - 1) { // 8비트마다 공백 삽입
             putchar(' ');
+        }
     }
     putchar('\n');
 }
 
-void short_bit_print(short a)
-{
-    short i;
-    short n = sizeof(short) * CHAR_BIT;
-    short mask = 1 << (n - 1);
+int main() {
+    uint32_t a;
+    uint16_t result;
 
-    
-    for (i = 1; i <= n; i++){
-        putchar(((a & mask) == 0) ? '0' : '1');
+    printf("Input num: ");
+    scanf("%" SCNu32, &a);
 
-        a <<= 1;
+    result = extract_alternating_bits(a);
 
-        if (i % CHAR_BIT == 0 && i < n)
-            putchar(' ');
-    }
-    putchar('\n');
-}
+    printf("Original 32bit Decimal  : %" PRIu32 "\n", a);
+    printf("Original 32bit Binary   : ");
+    print_bits(a, sizeof(uint32_t) * CHAR_BIT);
 
+    printf("Extracted 16bit Decimal : %" PRIu16 "\n", result);
+    printf("Extracted 16bit Binary  : ");
+    print_bits(result, sizeof(uint16_t) * CHAR_BIT);
 
-int main(void){
-   long a;
-   short result;
-
-   printf("Input integer: ");
-   scanf("%d", &a);
-
-   result = interleave_bit(a);
-
-   printf("Original long:   %ld\n", a);
-   printf("Original bit:    ");
-   bit_print(a);
-
-   printf("Extracted short: %d\n", result);
-   printf("Extracted bit:   ");
-   short_bit_print(result);
-   return 0;
+    return 0;
 }
