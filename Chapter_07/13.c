@@ -17,6 +17,56 @@ int roulette(void);
 
 int main(void)
 {
-    
+    int dollar = 10;
+    int result;
+    int game_count = 0;
+
+    srand(time(NULL));
+
+    int game;
+    int betting;
+
+    while (dollar > 0){
+        game_count++;
+        game = rand() % 2;  // Take even/odd game or number matching game
+        if (game == 0){     // Matching Even or Odd
+            betting = rand() % 2;
+
+            result = roulette();
+            if (result == 0){
+                dollar -= 1;
+            }
+            else if((result % 2) == betting){
+                dollar += 1;
+            }
+            else{
+                dollar -= 1;
+            }
+
+            printf("Even/Odd game.          Your betting: %d,   Roulette Even/Odd: %d\n", betting, (result % 2));
+        }   
+        else{               // Matching roulette number
+            betting = rand() % 36;
+            result = roulette();
+            if (betting == result){
+                dollar += 35;
+            }
+            else{
+                dollar -= 1;
+            }
+            printf("Number matching game.   Your betting: %d,    Roulette Number: %d\n", betting, result);
+        }
+    }
+
+    printf("Your dollar is out. Game Count: %d\n", game_count);
+    return 0;
 }
 
+int roulette(void)
+{
+    int number;
+    for (int i = 0; i < rand(); i++){
+        number = (rand() % 36);
+    }
+    return number;
+}
