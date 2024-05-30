@@ -23,15 +23,25 @@
 enum month {jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
 typedef enum month month;
 
-month previous_month(month m);
-
-int main(void)
-{
-
+month previous_month(month m) {
+    return (m == jan) ? dec : m - 1;
 }
 
-month previous_month(month m);
-{   
-    char 
-    return ((month + 11) % 12);
+void print_month_name(month m) {
+    const char* month_names[] = {"January", "February", "March", "April", "May", "June",
+                                 "July", "August", "September", "October", "November", "December"};
+    printf("%s", month_names[m]);
+}
+
+int main(void) {
+    month m = jan;
+    for (int i = 0; i < 12; i++) {
+        month prev = previous_month(m);
+        print_month_name(m);
+        printf(" (Previous: ");
+        print_month_name(prev);
+        printf(")\n");
+        m = (month)((m + 1) % 12);
+    }
+    return 0;
 }
