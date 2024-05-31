@@ -10,13 +10,33 @@
  */
 
 #include <stdio.h>
-#include <limits.h>
 
+// Day - 5 bit, Month - 4 bit, Year - 7 bit
+unsigned int pack_date(int day, int month, int year){
+    unsigned int packing = (day & 0x1F) | ((month & 0x0F) << 5) | ((year & 0x7F) << 9);
+    return packing;
+}
 
+void unpack_date(unsigned int packed_date, int *day, int *month, int *year){
+    *day = packed_date & 0x1F;
+    *month = (packed_date >> 5) & 0x0F;
+    *year = (packed_date >> 9) & 0x7F;
+}
 
 int main(void)
 {
     int day, month, year;
+    unsigned int packed_date;
 
+    printf("Please enter the day, month, and year (e.g., 1 7 33 for July 1, 1933): ");
+    scanf("%d %d %d", &day, &month, &year);
     
+    packed_date = pack_date(day, month, year);
+
+    printf("Packed date: %u\n", packed_date);
+
+    int unpacked_day, unpacked_month, unpacked_year;
+    unpack_date(packed_date, &unpacked_day, &unpacked_month, &unpacked_year);
+    printf("Unpacked date: %d/%d/%d\n", unpacked_day, unpacked_month, unpacked_year + 1900);
+    return 0;
 }
