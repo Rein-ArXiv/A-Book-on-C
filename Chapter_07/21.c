@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-enum suit = {Heart, Clover, Diamond, Spade};
+enum suit {Heart, Clover, Diamond, Spade};
 
 typedef struct {
     int score;
@@ -27,18 +27,39 @@ Card select_card(void)
     return card;
 }
 
-void select_card(Card cards[], int n){
-    
-    
+void unique_cards_check(Card cards[], int n){
     for (int i = 0; i < n; i++){
-        int unique = 0;
-        while (!unique){
-            unique = 1;
+        for (int j = 0; j < i; j++){
+            if ((cards[i].suit == cards[j].suit) && (cards[i].score == cards[j].score)){
+                cards[i].suit = rand() % 4;
+                cards[i].score = rand() % 13 + 1;
+
+                i = 0;
+                j = 0;
+            }
         }
     }
 }
 
+void print_cards(const Card cards[], int n) {
+    for (int i = 0; i < n; i++) {
+        const char *suits[] = {"Heart", "Clover", "Diamond", "Spade"};
+        printf("Card %d: %d of %s\n", i + 1, cards[i].score, suits[cards[i].suit]);
+    }
+}
+
+
 int main(void)
 {
+    srand(time(NULL));
+    int n = 5;
+    Card cards[5];
 
+    for(int i=0; i<5; i++){
+        cards[i] = select_card();
+    }
+
+    unique_cards_check(cards, n);
+    print_cards(cards, n);
+    return 0;
 }
