@@ -4,6 +4,7 @@
         "string.h": "c",
         "stdio.h": "c",
         "cmath": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "stdlib.h": "c"
     }
 }
