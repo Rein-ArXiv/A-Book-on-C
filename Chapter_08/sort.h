@@ -26,5 +26,5 @@
             printf(cntrl_string, array[i]);     \
         putchar('\n')
 
-int compare_fractional_part(const void *, const void *);
-int lexico(const void *, const void *);
+int lexico(char *p, char *q);
+int compare_decimal_part(float *p, float *q);

@@ -5,6 +5,7 @@
         "stdio.h": "c",
         "cmath": "c",
         "limits.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "utility": "cpp"
     }
 }

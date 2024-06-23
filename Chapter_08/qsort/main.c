@@ -17,4 +17,5 @@ int main(void)
     FILL(b, N, "float");
     PRINT(b, N, "%-6.1f");
     qsort(b, N, sizeof(float), compare_fractional_part);
+    PRINT(b, N, "%-6.1f");
 }
