@@ -7,6 +7,8 @@
  * 아라. 왜 시간 차이가 나는지 설명해 보아라.
  */
 
+// Compile with quicksort/quicksort.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

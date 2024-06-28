@@ -5,6 +5,8 @@
  * 한 코드를 검사하는 프로그램을 작성하여라.
  */
 
+// Compile with quicksort/quicksort_string.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

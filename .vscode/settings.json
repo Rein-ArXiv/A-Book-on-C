@@ -6,6 +6,7 @@
         "cmath": "c",
         "limits.h": "c",
         "stdlib.h": "c",
-        "utility": "cpp"
+        "utility": "cpp",
+        "mergesort.h": "c"
     }
 }

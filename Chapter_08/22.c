@@ -25,6 +25,8 @@
  * 값, 중간 값, 마지막 값만을 출력해도 좋다.
  */
 
+// Compile with quicksort/quicksort.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
