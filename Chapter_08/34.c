@@ -45,7 +45,7 @@ int main(void)
         fprintf(stderr, "Memory allocation failed\n");
         return 1;
     }
-
+e
     srand(time(NULL));      // seed the random number generator
 
     // Randomly filled array

@@ -59,7 +59,7 @@ int main(void)
         repeat--;
     }
 
-    printf("Average segment size: %lf\n", (double) total_segment_size / N);
+    printf("Average partition size: %lf\n", (double) total_segment_size / N);
 
     return 0;
 }
