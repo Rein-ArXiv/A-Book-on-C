@@ -2,7 +2,7 @@
 
 /* poker 프로그램에서 포커 패가 스트레이트인지를 검사하는 is_straight() 함수
  * 를 추가하여라. 이 함수는 스트레이트가 나올 때마다, 확률을 계산하여 출력해야
- * 한다. 플러시가 스트레이트보다 높으므로, 플러시가 낭로 확률은 스트레이트가 나
+ * 한다. 플러시가 스트레이트보다 높으므로, 플러시가 나올 확률은 스트레이트가 나
  * 올 확률보다 낮을 것이다. 수정한 poker 프로그램으로 이를 확인해 보아라.
  */
 
@@ -29,6 +29,7 @@ void play_poker(card deck[52]);
 void shuffle(card deck[52]);
 void swap(card *p, card *q);
 void deal_the_cards(card deck[52], card hand[NPLAYERS][5]);
+int is_flush(card h[5]);
 int is_straight(card h[5]);
 
 int main(void)
@@ -85,7 +86,7 @@ void prn_card_values(card *c_ptr)
 
 void play_poker(card deck[52])
 {
-    int flush_cnt = 0, hand_cnt = 0;
+    int flush_cnt = 0, straight_cnt = 0, hand_cnt = 0;
     int i, j;
     card hand[NPLAYERS][5];      // each player dealt 5 cards
 
@@ -98,16 +99,27 @@ void play_poker(card deck[52])
             ++hand_cnt;
             if (is_flush(hand[j])) {
                 ++flush_cnt;
-                printf("      Hand number: %d\n", hand_cnt);
-                printf("     Flush number: %d\n", flush_cnt);
-                printf("Flush probability: %.5f\n\n", (double) flush_cnt / hand_cnt);
+                printf("         Hand number: %d\n", hand_cnt);
+                printf("        Flush number: %d\n", flush_cnt);
+                printf("   Flush probability: %.5f\n\n", (double) flush_cnt / hand_cnt);
+            }
+
+            if (is_straight(hand[j])) {
+                ++straight_cnt;
+                printf("         Hand number: %d\n", hand_cnt);
+                printf("     Straight number: %d\n", straight_cnt);
+                printf("Straight probability: %.5f\n\n", (double) straight_cnt / hand_cnt);
             }
         }
     }
 
     printf("Total hands dealt: %d\n", hand_cnt);
+    printf("Total straight: %d\n", straight_cnt);
+    printf("Final straight probability: %.5f\n\n", (double) straight_cnt / hand_cnt);
+
+    printf("Total hands dealt: %d\n", hand_cnt);
     printf("Total flushes: %d\n", flush_cnt);
-    printf("Final flush probability: %.5f\n", (double) flush_cnt / hand_cnt);
+    printf("Final flush probability: %.5f\n\n", (double) flush_cnt / hand_cnt);
 }
 
 void shuffle(card deck[52])
@@ -135,12 +147,48 @@ void deal_the_cards(card deck[52], card hand[NPLAYERS][5])
             hand[i][j] = deck[card_cnt++];
 }
 
+int is_flush(card h[5])
+{
+    int i;
+    for (i = 1; i < 5; ++i)
+        if (h[i].suit != h[0].suit)
+            return 0;
+    return 1;
+}
+
 int is_straight(card h[5])
 {
     int i, j, temp;
     int pips[5];
-    for (i = 1; i < 5; ++i)
-        if (h[i].pips != h[i-1].pips + 1)
-            return 0;
-    return 1;
+    int straight = 0;
+    for (i = 0; i < 5; ++i){
+        pips[i] = h[i].pips;
+    }
+
+    for (i = 0; i < 4; ++i){
+        for (j = 0; j < 4 - i; ++j){
+            if (pips[j] > pips[j + 1]){
+                temp = pips[j];
+                pips[j] = pips[j + 1];
+                pips[j + 1] = temp;
+            }
+        }
+    }
+
+    for (i = 1; i < 5; ++i){
+        if (pips[i] != pips[i - 1] + 1){
+            break;
+        }
+    }
+
+    if (i == 5){
+        straight = 1;
+    }
+    else{
+        // 10, J, Q, K, A straight
+        if (pips[0] == 1 && pips[1] == 10 && pips[2] == 11 && pips[3] == 12 && pips[4] == 13){
+            straight = 1;
+        }
+    }
+    return straight;
 }
