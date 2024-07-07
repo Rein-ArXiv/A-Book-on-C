@@ -1,11 +1,8 @@
-/* Chapter 9 exercise 15 */
+/* Chapter 9 exercise 16 */
 
-/* poker 프로그램에 포커 패가 풀 하우스인지를 검사하는 is_fullhouse() 함수
- * 추가하여라. is_fullhouse() 함수는 풀 하우스가 나올 때마다, 확률을 계산하여
- * 출력해야 한다. 풀 하우스는 플러시보다 높으므로, 풀 하우스가 나올 확률은 플러
- * 시가 나올 확률보다 낮을 것이다. 수정된 poker 프로그램의 결과는 어떤지 설명
- * 하여라.
- */
+/* 포커 게임을 할 때, 보통 패를 값에 따라 정렬하게 된다. 5장의 카드를 점수 값에
+ * 따라 정렬하고 출력하는 프로그램을 작성하여라. 순서는 에이스가 가장 높고, 다
+ * 음이 킹인 순서이다. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +22,7 @@ typedef struct card card;
 
 card assign_values(int pips, cdhs suit);
 void prn_card_values(card *c_ptr);
+void prn_hand_values(card *hand);
 void play_poker(card deck[52]);
 void shuffle(card deck[52]);
 void swap(card *p, card *q);
@@ -32,6 +30,8 @@ void deal_the_cards(card deck[52], card hand[NPLAYERS][5]);
 int is_flush(card h[5]);
 int is_straight(card h[5]);
 int is_fullhouse(card h[5]);
+int card_compare(const void *a, const void *b);
+void card_sort(card *hand, int count);
 
 int main(void)
 {
@@ -82,7 +82,20 @@ void prn_card_values(card *c_ptr)
         suit_name = "hearts";
     else if (suit == spades)
         suit_name = "spades";
+
+    if (pips == 14){
+        pips = 1;
+    }
+
     printf("card: %2d of %s\n", pips, suit_name);
+}
+
+void prn_hand_values(card *hand)
+{
+    int count = 5;
+    for (int i = 0; i < count; i++){
+        prn_card_values(&hand[i]);
+    }
 }
 
 void play_poker(card deck[52])
@@ -98,7 +111,12 @@ void play_poker(card deck[52])
         deal_the_cards(deck, hand);
         for (j = 0; j < NPLAYERS; j++){
             ++hand_cnt;
+
+            card_sort(hand[j], 5);
+
             if (is_flush(hand[j])) {
+                prn_hand_values(hand[j]);
+
                 ++flush_cnt;
                 printf("          Hand number: %d\n", hand_cnt);
                 printf("         Flush number: %d\n", flush_cnt);
@@ -106,6 +124,8 @@ void play_poker(card deck[52])
             }
 
             if (is_straight(hand[j])) {
+                prn_hand_values(hand[j]);
+                
                 ++straight_cnt;
                 printf("          Hand number: %d\n", hand_cnt);
                 printf("      Straight number: %d\n", straight_cnt);
@@ -113,6 +133,8 @@ void play_poker(card deck[52])
             }
 
             if (is_fullhouse(hand[j])) {
+                prn_hand_values(hand[j]);
+                
                 ++fullhouse_cnt;
                 printf("          Hand number: %d\n", hand_cnt);
                 printf("     Fullhouse number: %d\n", fullhouse_cnt);
@@ -148,6 +170,30 @@ void swap(card *p, card *q)
     tmp = *p;
     *p = *q;
     *q = tmp;
+}
+
+int card_compare(const void *a, const void *b)
+{
+    card *cardA = (card *) a;
+    card *cardB = (card *) b;
+
+    if (cardA -> pips != cardB -> pips){
+        return (cardA -> pips) - (cardB -> pips);
+    }
+    else{
+        return (int) ((cardA -> suit) - (cardB -> suit));
+    }
+}
+
+void card_sort(card *hand, int count)
+{
+    qsort(hand, count, sizeof(card), card_compare);
+
+    while (hand[0].pips == 1)    // Ace
+    {
+        hand[0].pips = 14;
+        qsort(hand, count, sizeof(card), card_compare);
+    }
 }
 
 void deal_the_cards(card deck[52], card hand[NPLAYERS][5])
