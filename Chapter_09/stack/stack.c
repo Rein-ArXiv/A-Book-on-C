@@ -1,6 +1,8 @@
 /* In file stack.c */
 /* An implementation of type stack. */
 
+#include <stdio.h>
+
 #define MAX_LEN     1000
 #define EMPTY       -1
 #define FULL        (MAX_LEN - 1)
