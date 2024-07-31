@@ -31,6 +31,7 @@ void enqueue(data d, queue *q)
 
 data dequeue(queue *q)
 {
+    data d;
     elem *p;
 
     d = q -> front -> d;
