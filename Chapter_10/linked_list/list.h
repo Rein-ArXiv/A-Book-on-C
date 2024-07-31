@@ -13,3 +13,4 @@ struct linked_list {
 
 typedef struct linked_list ELEMENT;
 typedef ELEMENT *LINK;
+
