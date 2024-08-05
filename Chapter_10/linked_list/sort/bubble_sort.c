@@ -17,7 +17,7 @@ struct Node* swap(struct Node* ptr1, struct Node* ptr2)
 }
 
 // Function to sort the lsit
-int bubbleSort(struct Node** head, int count)
+void bubbleSort(struct Node** head, int count)
 {
     struct Node** h;
     int i, j, swapped;
