@@ -49,6 +49,20 @@ LINK create_l(DATA d[], int size)
     return head;
 }
 
+void concatenate(LINK a, LINK b)
+{
+    if (a == NULL){
+        a = b;
+        return;
+    }
+
+    LINK node = a;
+    while (node -> next != NULL){
+        node = node -> next;
+    }
+    node -> next = b;
+}
+
 void print_list(LINK head)
 {
     LINK current = head;
@@ -58,11 +72,12 @@ void print_list(LINK head)
     }
 }
 
+
 int main(void)
 {
     LINK h;
-    int size = 5;
-    DATA d[5] = {
+    int size = 2;
+    DATA d[2] = {
         {"Eve", 18, 80},
         {"Lilith", 20, 40},
     };
@@ -72,6 +87,10 @@ int main(void)
     printf("Original Linked list:\n");
     print_list(h);
     putchar('\n');
+
+    concatenate(h, h);
+    printf("Concatenated Linked list:\n");
+    print_list(h);
 
     return 0;
 }
