@@ -88,7 +88,7 @@ int main(void)
     DATA d2 = {"Lilith", 20, 40};
 
     insert_head(&h, d2);
-    printf("Inserted Linked list:\n");
+    printf("Head Inserted Linked list:\n");
     print_list(h);
 
     return 0;
