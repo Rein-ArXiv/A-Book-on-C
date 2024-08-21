@@ -48,6 +48,35 @@ LINK create_l(DATA d[], int size)
     return head;
 }
 
+void insert_after_data(LINK* head_ref, DATA find, DATA d)
+{
+    LINK node = (LINK) malloc(sizeof(ELEMENT));
+    LINK* current = head_ref;
+
+    strcpy(node -> d.name, d.name);
+    node -> d.age = d.age;
+    node -> d.weight = d.weight;
+    
+    while (*current != NULL){
+        if (strcmp(((*current) -> d.name), find.name) == 0 &&
+            (*current) -> d.age == find.age &&
+            (*current) -> d.weight == find.weight){
+            break;
+        }
+
+        current = &((*current) -> next);
+    }
+
+    if ((*current) == NULL){
+    printf("Error: Not found data. Cannot insert after nonexistent data.\n");
+        free(node);
+        return;
+    }
+
+    node -> next = (*current) -> next;
+    (*current) -> next = node;
+}
+
 void insert_head(LINK* head_ref, DATA d)
 {
     LINK new_head = (LINK) malloc(sizeof(ELEMENT));
@@ -100,10 +129,11 @@ int main(void)
     print_list(h);
     putchar('\n');
 
+    DATA find = {"Eve", 18, 80};
     DATA d2 = {"Lilith", 20, 40};
 
-    insert_tail(&h, d2);
-    printf("Tail Inserted Linked list:\n");
+    insert_after_data(&h, find, d2);
+    printf("Inserted Linked list:\n");
     print_list(h);
 
     return 0;
