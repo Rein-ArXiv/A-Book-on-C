@@ -1,4 +1,4 @@
-/* Chapter 10 exercise 13 */
+/* Chapter 10 exercise 15 */
 
 /* 이중 연결 선형 리스트의 원소는 다음과 같이 정의된다.
 

@@ -67,7 +67,7 @@ void concatenate(LINK a, LINK b)
     node -> next = b;
 }
 
-int is_cycle(LINK head)
+int iscycle(LINK head)
 {
     if (head == NULL) return 0;
 
@@ -108,7 +108,7 @@ int main(void)
 
     printf("Original Linked list cyclical: ");
 
-    int cycleic = is_cycle(h);
+    int cycleic = iscycle(h);
 
     if (cycleic == 1) printf("True\n");
     else printf("False\n");
@@ -116,7 +116,7 @@ int main(void)
     concatenate(h, h);
     printf("Concatenated Linked list cyclical: ");
 
-    cycleic = is_cycle(h);
+    cycleic = iscycle(h);
 
     if (cycleic == 1) printf("True\n");
     else printf("False\n");
