@@ -106,7 +106,6 @@ void print_list(LINK head)
     }
 }
 
-
 int main(void)
 {
     LINK h;
