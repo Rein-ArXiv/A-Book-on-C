@@ -4,7 +4,6 @@
 
 void prn_data(data *dp)
 {
-
     switch (dp -> kind) {
         case operator:
             printf("%s%3c\n", "kind: operator   op: ", dp -> u.op);

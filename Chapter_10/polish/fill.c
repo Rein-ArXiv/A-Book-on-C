@@ -17,7 +17,7 @@ void fill(stack *stk, const char *str)
     while (*p != '\0') {
         while (isspace(*p) || *p == ',')
             ++p;
-        b1 = (boolean) ((c1 = *p) == '+' || c1 == '-' || c1 == '*');
+        b1 = (boolean) ((c1 = *p) == '+' || c1 == '-' || c1 == '*' || c1 == '/');
         b2 = (boolean) ((c2 = *(p + 1)) == ',' || c2 == '\0');
 
         if (b1 && b2) {
