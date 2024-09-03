@@ -9,6 +9,7 @@
 #define FULL    10000
 
 typedef unsigned int data;
+// typedef unsigned int data;       // for exercise 28
 typedef enum {false, true} boolean;
 
 struct elem {       // an element in the queue
