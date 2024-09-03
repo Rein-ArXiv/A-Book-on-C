@@ -20,6 +20,11 @@ int evaluate(stack *polish)
                 d2 = pop(&eval);
                 d1 = pop(&eval);
                 
+                /* exercise 20
+                d1 = pop(&eval);
+                d2 = pop(&eval);
+                */
+
                 d.kind = value;     // begin overwriting d
                 switch (d.u.op) {
                     case '+':
