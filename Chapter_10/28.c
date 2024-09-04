@@ -6,7 +6,41 @@
  * 스케줄을 사용하여라. 주의: "프로세스"와 "프로세서"를 혼동하지 말아야 한다.
  */
 
-#include "queue/queue.h"
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define EMPTY   0
+#define FULL    10000
+
+typedef struct priority_data {
+    unsigned int pid;
+    unsigned int priority;
+} priority_data;
+
+typedef enum {false, true} boolean;
+
+struct elem {       // an element in the queue
+    priority_data d;
+    struct elem *next;
+};
+
+typedef struct elem elem;
+
+struct queue {
+    int cnt;        // a count of the elemetns
+    elem *front;    // ptr to the front element
+    elem *rear;     // ptr to the rear element
+};
+
+typedef struct queue queue;
+
+void initialize(queue *q);
+void enqueue(priority_data d, queue *q);
+priority_data dequeue(queue *q);
+priority_data front(const queue *q);
+boolean empty(const queue *q);
+boolean full(const queue *q);
 
 int main(void)
 {
@@ -16,7 +50,7 @@ int main(void)
     int cnt_c = 0;
     int cnt_d = 0;
     
-    data pid;           // process id number
+    priority_data pd;           // process id number
     queue a, b, c, d;
 
     initialize(&a);
@@ -28,27 +62,27 @@ int main(void)
     while ((ch = getchar()) != EOF) {
         switch (ch) {
         case 'A':
-            assert(scanf("%u", &pid) == 1);
+            assert(scanf("%u %u", &pd.pid, &pd.priority) == 2);
             if (!full(&a))
-                enqueue(pid, &a);
+                enqueue(pd, &a);
             break;
             
         case 'B':
-            assert(scanf("%u", &pid) == 1);
+            assert(scanf("%u %u", &pd.pid, &pd.priority) == 2);
             if (!full(&b))
-                enqueue(pid, &b);
+                enqueue(pd, &b);
             break;
 
         case 'C':
-            assert(scanf("%u", &pid) == 1);
+            assert(scanf("%u %u", &pd.pid, &pd.priority) == 2);
             if (!full(&c))
-                enqueue(pid, &c);
+                enqueue(pd, &c);
             break;
 
         case 'D':
-            assert(scanf("%u", &pid) == 1);
+            assert(scanf("%u %u", &pd.pid, &pd.priority) == 2);
             if (!full(&d))
-                enqueue(pid, &d);
+                enqueue(pd, &d);
             break;
         }
     }
@@ -56,26 +90,95 @@ int main(void)
     // Dequeue the requests and print them.
     printf("\nA's schedule:\n");
     while (!empty(&a)) {
-        pid = dequeue(&a);
-        printf("JOB %u is %d\n", ++cnt_a, pid);
+        pd = dequeue(&a);
+        printf("JOB %u is %u with priority %u \n", ++cnt_a, pd.pid, pd.priority);
     }
     
     printf("\nB's schedule:\n");
     while (!empty(&b)) {
-        pid = dequeue(&b);
-        printf("JOB %u is %d\n", ++cnt_b, pid);
+        pd = dequeue(&b);
+        printf("JOB %u is %u with priority %u \n", ++cnt_b, pd.pid, pd.priority);
     }
 
     printf("\nC's schedule:\n");
     while (!empty(&c)) {
-        pid = dequeue(&c);
-        printf("JOB %u is %d\n", ++cnt_c, pid);
+        pd = dequeue(&c);
+        printf("JOB %u is %u with priority %u \n", ++cnt_c, pd.pid, pd.priority);
     }
 
     printf("\nD's schedule:\n");
     while (!empty(&d)) {
-        pid = dequeue(&d);
-        printf("JOB %u is %d\n", ++cnt_d, pid);
+        pd = dequeue(&d);
+        printf("JOB %u is %u with priority %u \n", ++cnt_d, pd.pid, pd.priority);
     }
     return 0;
+}
+
+
+void initialize(queue *q)
+{
+    q -> cnt = 0;
+    q -> front = NULL;
+    q -> rear = NULL;
+}
+
+void enqueue(priority_data d, queue *q)
+{
+    elem *p, *prev = NULL, *current = q -> front;
+
+    p = (elem*)malloc(sizeof(elem));
+    p -> d = d;
+    p -> next = NULL;
+
+    while (current != NULL && current -> d.priority >= d.priority) {
+        prev = current;
+        current = current -> next;
+    }
+
+    if (prev == NULL) {
+        p -> next = q -> front;
+        q -> front = p;
+    } else {
+        prev -> next = p;
+        p -> next = current;
+    }
+
+    if (p -> next == NULL){
+        q -> rear = p;
+    }
+
+    q -> cnt++;
+}
+
+priority_data dequeue(queue *q)
+{
+    priority_data d;
+    elem *p;
+
+    d = q -> front -> d;
+    p = q -> front;
+    q -> front = q -> front -> next;
+    q -> cnt--;
+
+    if (q -> front == NULL){
+        q -> rear = NULL;
+    }
+
+    free(p);
+    return d;
+}
+
+priority_data front(const queue *q)
+{
+    return (q -> front -> d);
+}
+
+boolean empty(const queue *q)
+{
+    return ((boolean) (q -> cnt == EMPTY));
+}
+
+boolean full(const queue *q)
+{
+    return ((boolean) (q -> cnt == FULL));
 }

@@ -13,3 +13,75 @@
  * 왼쪽 부트리에 삽입하고, 크거나 같으면 오른쪽 부트리에 삽입한다. 이러한 과정
  * 을 부트리가 NULL일 때까지 재귀적으로 반복 수행한다.
  */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int DATA;
+
+struct node {
+    DATA d;
+    struct node *left;
+    struct node *right;
+};
+typedef struct node NODE;
+typedef NODE *BTREE;
+
+BTREE create_node(DATA d) {
+    BTREE new_node = (BTREE) malloc(sizeof(NODE));
+    if (new_node == NULL) {
+        printf("Memory allocation failed.\n");
+        return NULL;
+    }
+    new_node -> d = d;
+    new_node -> left = NULL;
+    new_node -> right = NULL;
+    return new_node;
+}
+
+BTREE insert_bst(BTREE root, DATA d) {
+    if (root == NULL) {
+        return create_node(d);
+    }
+    
+    if (d < root -> d){
+        root -> left = insert_bst(root -> left, d);
+    }
+    
+    else {
+        root -> right = insert_bst(root -> right, d);
+    }
+
+    return root;
+}
+
+BTREE array_to_bst(DATA arr[], int size) {
+    BTREE root = NULL;
+
+    for (int i = 0; i < size; i++) {
+        root = insert_bst(root, arr[i]);
+    }
+
+    return root;
+}
+
+void inorder_traversal(BTREE root) {
+    if (root != NULL) {
+        inorder_traversal(root -> left);
+        printf("%d ", root -> d);
+        inorder_traversal(root -> right);
+    }
+}
+
+int main() {
+    DATA arr[] = {8, 4, 15, 2, 6, 17, 8};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    BTREE root = array_to_bst(arr, size);
+
+    printf("Inorder Traversal of the BST: ");
+    inorder_traversal(root);
+    printf("\n");
+
+    return 0;
+}

@@ -15,4 +15,4 @@ struct node {
 typedef struct node NODE;
 typedef NODE *GTREE;
 
-#include "fct_proto.h"  // function prototype
+// #include "fct_proto.h"  // function prototype

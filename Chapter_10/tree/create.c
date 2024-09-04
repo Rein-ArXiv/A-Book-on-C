@@ -27,3 +27,4 @@ BTREE create_tree(DATA a[], int i, int size)
         return NULL;
     else
         return (init_node(a[i], create_tree(a, 2 * i + 1, size), create_tree(a, 2 * i + 2, size)));
+}
