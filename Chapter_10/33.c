@@ -21,36 +21,60 @@
  * (Reading, MA: Addison-Wesley, 1983)을 참조하여라.
  */
 
+
+// array 받아서 build heap (heapify up)
+// heap 만든 걸 하나씩 pop 하면서 출력 (heapify down)
+
 #include <stdio.h>
-#include <stdlib.h>
 
-typedef int DATA;
+void heap_sort(int arr[], int n);
+void heapify_down(int arr[], int n, int index);
+void print_array(int arr[], int n);
 
-struct node {
-   DATA d;
-   struct node *left;
-   struct node *right;
-};
-
-typedef struct node NODE;
-typedef NODE *BTREE;
-
-BTREE create_node(DATA d)
+int main(void)
 {
-   BTREE new_node = (BTREE) malloc(sizeof(NODE));
+   int arr[] = {12, 11, 13, 5, 6, 7};
+   int n = sizeof(arr) / sizeof(arr[0]);
 
-   if (new_node == NULL) {
-      printf("Memory allocation failed.\n");
-      return NULL;
-   }
-
-   new_node -> d = d;
-   new_node -> left = NULL;
-   new_node -> right = NULL;
-   return new_node;
+   heap_sort(arr, n);
+   print_array(arr, n);
+   return 0;
 }
 
-BTREE array_to_node(DATA d[], int size)
+void heap_sort(int arr[], int n)
 {
-   
+   for (int i = n / 2 - 1; i >= 0; i--){
+      heapify_down(arr, n, i);
+   }
+}
+
+void heapify_down(int arr[], int n, int index)
+{
+   int left_child = index * 2 + 1;
+   int right_child = index * 2 + 2;
+   int smallest = index;
+
+   if (left_child < n && arr[left_child] < arr[smallest]){
+      smallest = left_child;
+   }
+
+   if (right_child < n && arr[right_child] < arr[smallest]){
+      smallest = right_child;
+   }
+
+   if (smallest != index){
+      int tmp = arr[index];
+      arr[index] = arr[smallest];
+      arr[smallest] = tmp;
+
+      heapify_down(arr, n, smallest);
+   }
+}
+
+void print_array(int arr[], int n)
+{
+   for (int i = 0; i < n; i++){
+      printf("%d ", arr[i]);
+   }
+   putchar('\n');
 }
