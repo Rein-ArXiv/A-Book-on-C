@@ -21,3 +21,36 @@
  * (Reading, MA: Addison-Wesley, 1983)을 참조하여라.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int DATA;
+
+struct node {
+   DATA d;
+   struct node *left;
+   struct node *right;
+};
+
+typedef struct node NODE;
+typedef NODE *BTREE;
+
+BTREE create_node(DATA d)
+{
+   BTREE new_node = (BTREE) malloc(sizeof(NODE));
+
+   if (new_node == NULL) {
+      printf("Memory allocation failed.\n");
+      return NULL;
+   }
+
+   new_node -> d = d;
+   new_node -> left = NULL;
+   new_node -> right = NULL;
+   return new_node;
+}
+
+BTREE array_to_node(DATA d[], int size)
+{
+   
+}
