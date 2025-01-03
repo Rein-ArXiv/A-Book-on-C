@@ -9,7 +9,6 @@ void mergesort(int arr[], int l, int r)
         // Sort first and second halves
         mergesort(arr, l, m);
         mergesort(arr, m + 1, r);
-
         merge(arr, l, m, r);
     }
 }
