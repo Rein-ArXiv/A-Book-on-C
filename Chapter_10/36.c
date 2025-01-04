@@ -48,7 +48,7 @@ BTREE insert_bnode(DATA d, BTREE root)
     if (root == NULL)
     {
         root = create_bnode(d);
-        return;
+        return root;
     }
 
     if (d < root -> d){
@@ -77,7 +77,26 @@ GTREE create_gnode(DATA d)
 
 GTREE btree_to_gtree(BTREE root)
 {
+    if (root == NULL)
+    {
+        printf("Binary Tree is NULL.\n");
+        return NULL;
+    }
 
+    GTREE gnode = create_gnode(root -> d);
+
+
+    if (root -> left != NULL)
+    {
+        gnode -> child = btree_to_gtree(root -> left);
+    }
+
+    if (root -> right != NULL)
+    {
+        gnode -> sibling = btree_to_gtree(root -> right);
+    }
+
+    return gnode;
 }
 
 int max_leaf_level(GTREE node, int level)
@@ -107,19 +126,41 @@ int max_leaf_level(GTREE node, int level)
     return max_level;
 }
 
+void print_gtree(GTREE root, int level)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    for (int i = 0; i < level; i++)
+    {
+        printf("..");
+    }
+    printf("%d\n", root -> d);
+
+    print_gtree(root -> child, level + 1);
+    print_gtree(root -> sibling, level);
+}
 
 int main()
 {
-    // 샘플 트리 구성
-    GTREE root = create_node(1);
-    root->child = create_node(2);
-    root->child->sibling = create_node(3);
-    root->child->child = create_node(4);
-    root->child->child->sibling = create_node(5);
-    root->child->sibling->child = create_node(6);
+    // 이진 트리 생성
+    BTREE btree = NULL;
+    btree = insert_bnode(10, btree);
+    btree = insert_bnode(5, btree);
+    btree = insert_bnode(15, btree);
+    btree = insert_bnode(3, btree);
+    btree = insert_bnode(7, btree);
+    btree = insert_bnode(12, btree);
+    btree = insert_bnode(18, btree);
 
-    int max_level = max_leaf_level(root, 1);
-    printf("Maximum level of leaf node: %d\n", max_level);
+    // 이진 트리를 일반 트리로 변환
+    GTREE gtree = btree_to_gtree(btree);
+
+    // 일반 트리 출력
+    printf("General Tree Representation:\n");
+    print_gtree(gtree, 0);
 
     return 0;
 }

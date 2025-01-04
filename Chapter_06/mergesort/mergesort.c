@@ -2,7 +2,7 @@
 
 void mergesort(int arr[], int l, int r)
 {
-    if (l < r)
+    if (l < r)      // 배열의 개수가 1개인지 (l == r)
     {
         int m = l + (r - l) / 2;    // Same as (l+r)/2, but avoids overflow for large l and h
 
