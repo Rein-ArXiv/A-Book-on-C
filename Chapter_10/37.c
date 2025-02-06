@@ -37,4 +37,72 @@ GTREE create_gnode(DATA d, WEIGHT w)
       printf("Memory allocation failed.\n");
       return NULL;
    }
+
+   new_node -> d = d;
+   new_node -> w = w;
+
+   new_node -> child = NULL;
+   new_node -> sibling = NULL;
+}
+
+int calculate_total_weight(GTREE root)
+{
+   if (root == NULL)
+   {
+      return 0;
+   }
+
+   int total_weight = root -> w;
+
+   total_weight += calculate_total_weight(root -> child);
+   total_weight += calculate_total_weight(root -> sibling);
+
+   return total_weight;
+}
+
+int calculate_max_weighted_path(GTREE root, int current_sum)
+{
+   if (root == NULL)
+   {
+      return current_sum;
+   }
+
+   current_sum += root -> w;
+
+   int max_child_path = current_sum;
+
+   if (root -> child != NULL)
+   {
+      max_child_path = calculate_max_weighted_path(root -> child, current_sum);
+   }
+
+   int max_sibling_path = current_sum - root -> w;
+   if (root -> sibling != NULL)
+   {
+      max_sibling_path = calculate_max_weighted_path(root -> sibling, current_sum - root -> w);
+   }
+
+   return (max_child_path > max_sibling_path) ? max_child_path : max_sibling_path;
+}
+
+int max_weighted_path(GTREE root)
+{
+   if (root == NULL)
+   {
+      return 0;
+   }
+   return calculate_max_weighted_path(root, 0);
+}
+
+int main() {
+   GTREE root = create_gnode(1, 10);
+   root->child = create_gnode(2, 20);
+   root->child->sibling = create_gnode(3, 15);
+   root->child->child = create_gnode(4, 25);
+   root->child->child->sibling = create_gnode(5, 30);
+
+   printf("Total weight of all nodes: %d\n", calculate_total_weight(root));
+   printf("Maximum weighted path: %d\n", max_weighted_path(root));
+
+   return 0;
 }
