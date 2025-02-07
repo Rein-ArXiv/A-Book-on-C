@@ -70,5 +70,42 @@ SparseMatrix* create_sparse_matrix(int rows, int cols)
 
 void insert_value(SparseMatrix* matrix, int row, int col, int value)
 {
-    
+    if (value == 0) return;
+
+    Node* new_node = create_node(row, col, value);
+
+    if (!matrix -> row_heads[row])
+    {
+        matrix -> row_heads[row] = new_node;
+    }
+    else
+    {
+        Node* current = matrix -> row_heads[row];
+        Node* prev = NULL;
+
+        while (current && current -> col < col)
+        {
+            prev = current;
+            current = current -> row_next;
+        }
+
+        if (prev)
+        {
+            prev -> row_next = new_node;
+        }
+        else
+        {
+            matrix -> row_heads[row] = new_node;
+        }
+        new_node -> row_next = current;
+    }
+
+    if (!matrix -> col_heads[row])
+    {
+        matrix -> col_heads[row] = new_node;
+    }
+    else
+    {
+        
+    }
 }
