@@ -72,40 +72,165 @@ void insert_value(SparseMatrix* matrix, int row, int col, int value)
 {
     if (value == 0) return;
 
+    Node* current = matrix -> row_heads[row];
+    Node* prev = NULL;
+
+    while (current && current -> col < col)
+    {
+        prev = current;
+        current = current -> row_next;
+    }
+
+    if (current && current -> col == col)
+    {
+        current -> value = value;
+        return;
+    }
+
     Node* new_node = create_node(row, col, value);
 
-    if (!matrix -> row_heads[row])
+    new_node -> row_next = current;
+
+    if (prev)
+    {
+        prev -> row_next = new_node;
+    }
+    else
     {
         matrix -> row_heads[row] = new_node;
     }
+
+    current = matrix -> col_heads[col];
+    prev = NULL;
+
+    while (current && current -> row < row)
+    {
+        prev = current;
+        current = current -> col_next;
+    }
+
+    new_node -> col_next = current;
+
+    if (prev)
+    {
+        prev -> col_next = new_node;
+    }
     else
     {
-        Node* current = matrix -> row_heads[row];
-        Node* prev = NULL;
+        matrix -> col_heads[col] = new_node;
+    }
+}
 
-        while (current && current -> col < col)
+SparseMatrix* multi_sparse_matrices(SparseMatrix* A, SparseMatrix* B)
+{
+    if ((A -> cols) != (B -> rows))
+    {
+        printf("Matrices cannot multiply.\n");
+        return NULL;
+    }
+
+    int rows = A -> rows;
+    int cols = B -> cols;
+
+    SparseMatrix* result_matrix = create_sparse_matrix(rows, cols);
+
+    for (int r = 0; r < A -> rows; r++)
+    {
+        for (int c = 0; c < B -> cols; c++)
         {
-            prev = current;
+            Node* current_A_node = A -> row_heads[r];
+            Node* current_B_node = B -> col_heads[c];
+
+            if (!current_A_node)
+            {
+                break;
+            }
+            if (!current_B_node)
+            {
+                continue;
+            }
+
+            int multiple_element = 0;
+
+            while (current_A_node && current_B_node)
+            {
+                if (current_A_node -> col < current_B_node -> row)
+                {
+                    current_A_node = current_A_node -> row_next;
+                }
+                else if (current_A_node -> col > current_B_node -> row)
+                {
+                    current_B_node = current_B_node -> col_next;
+                }
+                else
+                {
+                    multiple_element += (current_A_node -> value) * (current_B_node -> value);
+                    current_A_node = current_A_node -> row_next;
+                    current_B_node = current_B_node -> col_next;
+                }
+            }
+
+            insert_value(result_matrix, r, c, multiple_element);
+        }
+    }
+    return result_matrix;
+}
+
+void print_sparse_matrix(SparseMatrix* matrix)
+{
+    for (int r = 0; r < matrix -> rows; r++)
+    {
+        Node* current = matrix -> row_heads[r];
+        while (current)
+        {
+            printf("(%d, %d, %d) ", current -> row, current -> col, current -> value);
             current = current -> row_next;
         }
+        printf("\n");
+    }
+}
 
-        if (prev)
+void free_sparse_matrix(SparseMatrix* matrix)
+{
+    for (int r = 0; r < matrix -> rows; r++)
+    {
+        Node* current = matrix -> row_heads[r];
+        while (current)
         {
-            prev -> row_next = new_node;
+            Node* temp = current;
+            current = current -> row_next;
+            free(temp);
         }
-        else
-        {
-            matrix -> row_heads[row] = new_node;
-        }
-        new_node -> row_next = current;
     }
+    free(matrix -> row_heads);
+    free(matrix -> col_heads);
+    free(matrix);
+}
 
-    if (!matrix -> col_heads[row])
-    {
-        matrix -> col_heads[row] = new_node;
-    }
-    else
-    {
-        
-    }
+int main(void)
+{
+    SparseMatrix* A = create_sparse_matrix(3, 3);
+    SparseMatrix* B = create_sparse_matrix(3, 3);
+
+    insert_value(A, 0, 0, 1);
+    insert_value(A, 0, 1, 2);
+    insert_value(A, 1, 2, 3);
+    insert_value(A, 2, 0, 4);
+    insert_value(A, 2, 2, 5);
+
+    insert_value(B, 0, 1, 6);
+    insert_value(B, 1, 2, 7);
+    insert_value(B, 2, 0, 8);
+    insert_value(B, 2, 2, 9);
+
+    SparseMatrix* C = multi_sparse_matrices(A, B);
+
+    printf("\nResultant Matrix C (A * B):\n");
+    print_sparse_matrix(C);
+
+    free_sparse_matrix(A);
+    free_sparse_matrix(B);
+    free_sparse_matrix(C);
+
+    return 0;
 }

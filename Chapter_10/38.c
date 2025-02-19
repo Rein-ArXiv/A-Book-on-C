@@ -77,61 +77,54 @@ void insert_value(SparseMatrix* matrix, int row, int col, int value)
 {
     if (value == 0) return;
 
+    Node* current = matrix -> row_heads[row];
+    Node* prev = NULL;
+
+    while (current && current -> col < col)
+    {
+        prev = current;
+        current = current -> row_next;
+    }
+
+    if (current && current -> col == col)
+    {
+        current -> value = value;
+        return;
+    }
+
     Node* new_node = create_node(row, col, value);
 
-    if (!matrix -> row_heads[row])
+    new_node -> row_next = current;
+
+    if (prev)
+    {
+        prev -> row_next = new_node;
+    }
+    else
     {
         matrix -> row_heads[row] = new_node;
     }
-    else
+
+    current = matrix -> col_heads[col];
+    prev = NULL;
+
+    while (current && current -> row < row)
     {
-        Node* current = matrix -> row_heads[row];
-        Node* prev = NULL;
-
-        while (current && current -> col < col)
-        {
-            prev = current;
-            current = current -> row_next;
-        }
-
-        if (prev)
-        {
-            prev -> row_next = new_node;
-        }
-        else
-        {
-            matrix -> row_heads[row] = new_node;
-        }
-        new_node -> row_next = current;
+        prev = current;
+        current = current -> col_next;
     }
 
-    if (!matrix -> col_heads[col])
+    new_node -> col_next = current;
+
+    if (prev)
+    {
+        prev -> col_next = new_node;
+    }
+    else
     {
         matrix -> col_heads[col] = new_node;
     }
-    else
-    {
-        Node* current = matrix -> col_heads[col];
-        Node* prev = NULL;
-
-        while (current && current -> row < row)
-        {
-            prev = current;
-            current = current -> col_next;
-        }
-
-        if (prev)
-        {
-            prev -> col_next = new_node;
-        }
-        else
-        {
-            matrix -> col_heads[col] = new_node;
-        }
-        new_node -> col_next = current;
-    }
 }
-
 
 SparseMatrix* add_sparse_matrices(SparseMatrix* A, SparseMatrix* B)
 {
@@ -208,6 +201,7 @@ void free_sparse_matrix(SparseMatrix* matrix)
         }
     }
     free(matrix->row_heads);
+    free(matrix->col_heads);
     free(matrix);
 }
 
