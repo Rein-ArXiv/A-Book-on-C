@@ -8,15 +8,30 @@
  * 라.
  */
 
- #include <stdio.h>
- #include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
- #define MAX_LEN 1000
+#define MAX_LEN 1000
 
- void getstring(FILE *ifp)
- {
+void getstring(FILE *ifp);
+void putstring(FILE *ofp);
+
+int main(int argc)
+{
+
+}
+
+void getstring(FILE *ifp)
+{
+    int c;
     while ((c = getc(ifp)) != EOF)
     {
         
     }
- }
+}
+
+
+
+void putstring(FILE *ofp)
+{
+}
