@@ -13,25 +13,48 @@
 
 #define MAX_LEN 1000
 
-void getstring(FILE *ifp);
-void putstring(FILE *ofp);
+char* getstring(FILE *ifp, char *buffer);
+void putstring(FILE *ofp, const char *str);
 
 int main(int argc)
 {
+    FILE *ifp = fopen("input.txt", "r");
+    FILE *ofp = fopen("output.txt", "w");
 
-}
-
-void getstring(FILE *ifp)
-{
-    int c;
-    while ((c = getc(ifp)) != EOF)
+    if (ifp == NULL || ofp == NULL)
     {
-        
+        perror("파일 열기 실패");
+        return 1;
     }
+
+    char buffer[MAX_LEN];
+    getstring(ifp, buffer);
+    putstring(ofp, buffer);
+
+    fclose(ifp);
+    fclose(ofp);
+
+    return 0;
+}
+
+char* getstring(FILE *ifp, char *buffer)
+{
+    int c, i = 0;
+    
+    while ((c = getc(ifp)) != EOF && i < MAX_LEN - 1)
+    {
+        buffer[i++] = c;
+    }
+    buffer[i] = '\0';
+    return buffer;
 }
 
 
 
-void putstring(FILE *ofp)
+void putstring(FILE *ofp, const char *str)
 {
+    while (*str)
+    {
+        putc(*str++, ofp);
+    }
 }
