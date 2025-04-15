@@ -8,6 +8,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_LINE    1000
+#define LINE_PER_SCREEN 20
+
+#ifdef _WIN32
+    #define CLEAR_COMMAND "cls"
+#else
+    #define CLEAR_COMMAND "clear"
+#endif
+
+void wait_enter()
+{
+    printf("Press Enter to view next 20 lines.\n");
+    while(1)
+    {
+        int c = getchar();
+        if (c == '\n')
+        {
+            break;
+        }
+    }
+}
+
+void clear_screen()
+{
+    system(CLEAR_COMMAND);
+}
+
 int main(int argc, char** argv)
 {
     if (argc != 2)
@@ -24,8 +51,21 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    char line[1000];
-    int line_num = 1;
+    char line[MAX_LINE];
+    int line_num = 0;
 
-    
+    while (fgets(line, sizeof(line), ifp))
+    {
+        puts(line);
+        line_num++;
+        
+        if (line_num % LINE_PER_SCREEN == 0)
+        {
+            wait_enter();
+            clear_screen();
+        }
+    }
+
+    printf("\n------- FILE END --------\n");
+    return 0;
 }
